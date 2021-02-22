@@ -14,7 +14,7 @@
 <meta property="og:description" content="视图通过表动态生成的数据  视图和表的区别    关键字 空间占用 用途    view 占用少，只保存 SQL 逻辑 一般用于查询   table 占用多，保存实际的数据 增删改查    视图的更新（MySQL 8.0 Reference Manual &#x2F; Updatable and Insertable Views）  对视图的更新会影响原始表 当视图和原始表的每一行为一对一关系时，该视图可更">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-06T09:11:00.901Z">
+<meta property="article:modified_time" content="2021-02-06T09:34:57.405Z">
 <meta property="article:author" content="Lykr">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="MySQL">
@@ -204,16 +204,14 @@
 </ul>
 </li>
 <li>自定义变量：用户自定义的变量<ul>
-<li><p>用户变量：针对当前会话有效</p>
-</li>
-<li><p>局部变量：仅在 <code>begin</code> <code>end</code> 中有效</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 声明</span></span><br><span class="line"><span class="keyword">declare</span> var_name var_type [<span class="keyword">default</span> var_value];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 赋值</span></span><br><span class="line"><span class="keyword">set</span> var_name <span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">set</span> var_name :<span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@var</span>_name :<span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">select</span> var_value <span class="keyword">into</span> var_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看</span></span><br><span class="line"><span class="keyword">select</span> var_name;</span><br></pre></td></tr></table></figure>
+<li>用户变量：针对当前会话有效</li>
+<li>局部变量：仅在 <code>begin</code> <code>end</code> 中有效<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 声明</span></span><br><span class="line"><span class="keyword">declare</span> var_name var_type [<span class="keyword">default</span> var_value];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 赋值</span></span><br><span class="line"><span class="keyword">set</span> var_name <span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">set</span> var_name :<span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@var</span>_name :<span class="operator">=</span> var_value;</span><br><span class="line"><span class="keyword">select</span> var_value <span class="keyword">into</span> var_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看</span></span><br><span class="line"><span class="keyword">select</span> var_name;</span><br></pre></td></tr></table></figure>
 
-<h2 id="存储过程和函数"><a href="#存储过程和函数" class="headerlink" title="存储过程和函数"></a>存储过程和函数</h2></li>
+</li>
 </ul>
 </li>
 </ul>
-<p>类似 Java 的方法。</p>
+<h2 id="存储过程和函数"><a href="#存储过程和函数" class="headerlink" title="存储过程和函数"></a>存储过程和函数</h2><p>类似 Java 的方法。</p>
 <ul>
 <li><p>存储过程和函数：一组预先编译好的 SQL 语句的集合</p>
 <ul>
