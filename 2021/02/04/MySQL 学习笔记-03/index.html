@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="DDL 语言数据类型参考：MySQL 8.0 Reference Manual &#x2F; Data Types 数值型   类型 所占字节数 备注    tinyint 1 以下 5 种 *int 型如不标明 unsigned 默认带符号   smallint 2    mediumint 3    integer&#x2F;int 4    bigint 8    decimal&#x2F;dec(m, d)  m 表示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 学习笔记-03">
+<meta property="og:url" content="https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/index.html">
+<meta property="og:site_name" content="Lykr">
+<meta property="og:description" content="DDL 语言数据类型参考：MySQL 8.0 Reference Manual &#x2F; Data Types 数值型   类型 所占字节数 备注    tinyint 1 以下 5 种 *int 型如不标明 unsigned 默认带符号   smallint 2    mediumint 3    integer&#x2F;int 4    bigint 8    decimal&#x2F;dec(m, d)  m 表示">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-06T08:33:18.824Z">
+<meta property="article:author" content="Lykr">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+        
+      
+    
+    <!-- title -->
+    <title>MySQL 学习笔记-03</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2021/02/05/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-04/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&text=MySQL 学习笔记-03"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&is_video=false&description=MySQL 学习笔记-03"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 学习笔记-03&body=Check out this article: https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&name=MySQL 学习笔记-03&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&t=MySQL 学习笔记-03"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL-%E8%AF%AD%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">DDL 语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">数值型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">字符型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%9E%8B"><span class="toc-number">1.1.3.</span> <span class="toc-text">日期型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93%E7%9B%B8%E5%85%B3"><span class="toc-number">1.2.</span> <span class="toc-text">库相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9B%B8%E5%85%B3"><span class="toc-number">1.3.</span> <span class="toc-text">表相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCL-%E8%AF%AD%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">TCL 语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">并发事务</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        MySQL 学习笔记-03
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Lykr</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-03T16:00:00.000Z" itemprop="datePublished">2021-02-04</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/MySQL/" rel="tag">MySQL</a>, <a class="tag-link-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="DDL-语言"><a href="#DDL-语言" class="headerlink" title="DDL 语言"></a>DDL 语言</h2><h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>参考：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/translation-refman/8.0/en/data-types.html">MySQL 8.0 Reference Manual / Data Types</a></p>
+<h4 id="数值型"><a href="#数值型" class="headerlink" title="数值型"></a>数值型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>所占字节数</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tinyint</td>
+<td>1</td>
+<td>以下 5 种 *int 型如不标明 unsigned 默认带符号</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>integer/int</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>decimal/dec(m, d)</td>
+<td></td>
+<td>m 表示有效数字，默认为 10；d 表示小数点后的位数，默认为 0</td>
+</tr>
+<tr>
+<td>numeric(m, d)</td>
+<td></td>
+<td>MySQL 8.0 中 numeric 和 decimal 的实现一样</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>bit(m)</td>
+<td></td>
+<td>m 属于[1, 64]；用 <code>b&#39;value&#39;</code> 来表示一个比特值，如 <code>b&#39;111&#39;</code> 表示 7；如果赋值的长度小于 m，将会在左边补 0</td>
+</tr>
+<tr>
+<td>boolean/bool</td>
+<td>1</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>注意</strong>：对于 floating-point(float/double) 或者 fixed-point(decimal/numeric) 列，如果插入超出范围的值，当开启 strict SQL mode 时会报 out of range 异常并插入失败，否则会插入一个临界值。</p>
+<h4 id="字符型"><a href="#字符型" class="headerlink" title="字符型"></a>字符型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>空间占用</th>
+<th>效率</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char(m)</td>
+<td>储存字节固定，高</td>
+<td>高</td>
+<td>m 可以省略，默认为 1</td>
+</tr>
+<tr>
+<td>varchar(m)</td>
+<td>储存字节根据实际内容变化，低</td>
+<td>低</td>
+<td>m 不能省略</td>
+</tr>
+</tbody></table>
+<p><strong>binary、varbinary、blob、text、enum 和 set 待补充</strong></p>
+<h4 id="日期型"><a href="#日期型" class="headerlink" title="日期型"></a>日期型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>格式</th>
+<th>范围</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>‘YYYY-MM-DD’</td>
+<td>‘1000-01-01’ 到 ‘9999-12-31’</td>
+<td></td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>‘YYYY-MM-DD hh:mm:ss’</td>
+<td>‘1000-01-01 00:00:00’ 到 ‘9999-12-31 23:59:59’</td>
+<td>不受时区变化影响</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td></td>
+<td>‘1970-01-01 00:00:01’ UTC 到 ‘2038-01-19 03:14:07’ UTC</td>
+<td>受时区变化影响，储存时会将当前时区的时间转换至 UTC 时区储存，读取时再按当前时区转换回来（datetime 不会这么做）</td>
+</tr>
+<tr>
+<td>time</td>
+<td>‘hh:mm:ss’</td>
+<td>‘-838:59:59.000000’ 到 ‘838:59:59.000000’</td>
+<td></td>
+</tr>
+<tr>
+<td>year</td>
+<td>YYYY</td>
+<td>1901 到 2155</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="库相关"><a href="#库相关" class="headerlink" title="库相关"></a>库相关</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建库</span></span><br><span class="line"><span class="keyword">create</span> database [if <span class="keyword">not</span> <span class="keyword">exists</span>] db_name [<span class="type">character</span> <span class="keyword">set</span> charset_name]</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改库所用字符集</span></span><br><span class="line"><span class="keyword">alter</span> database db_name <span class="type">character</span> <span class="keyword">set</span> charset_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除库</span></span><br><span class="line"><span class="keyword">drop</span> database [if <span class="keyword">exists</span>] db_name;</span><br></pre></td></tr></table></figure>
+<h3 id="表相关"><a href="#表相关" class="headerlink" title="表相关"></a>表相关</h3><ul>
+<li>SQL 约束（Constraints）：限制加入表的数据类型<ol>
+<li><code>not null</code>：不接受 null 值</li>
+<li><code>unique</code>：不接受重复值，一个表可以有多个该约束</li>
+<li><code>primary key</code>：不接受重复值，一个表只能有一个该约束，记录会按照主键升序排列<ul>
+<li>对于整数型主键，可在声明时附加 <code>auto_increment</code> 让主键自增</li>
+<li>可以通过<code>set auto_increment_increment = s</code> 设置自增步长 <code>s</code>，默认为 1</li>
+</ul>
+</li>
+<li><code>foreign key</code>：声明外键，必须是另一个表的主键，且类型一致<ul>
+<li>例：<code>foreign key(table_a_column) references table_b(primary_column)</code></li>
+</ul>
+</li>
+<li><code>check</code>：设置该列需要满足的条件，MySQL 8.0.16 后开始支持</li>
+<li><code>default</code>：可设置该列默认值</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> [if <span class="keyword">not</span> <span class="keyword">exists</span>] table_name(</span><br><span class="line">    <span class="comment">-- 列级约束，除了外键都支持</span></span><br><span class="line">    column_name column_type [column_constraint],</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">-- 表级约束，除了非空和默认都支持</span></span><br><span class="line">    [[<span class="keyword">constraint</span> constraint_name] table_constraint(<span class="keyword">column</span>)],</span><br><span class="line">    ...</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表</span></span><br><span class="line"><span class="comment">--- 添加列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> <span class="keyword">column</span> column_name column_type [<span class="keyword">first</span><span class="operator">/</span>after column_offset] [<span class="keyword">constraint</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">--- 修改列的类型或约束，不写约束则会删除约束</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name modify <span class="keyword">column</span> column_name column_type [<span class="keyword">constraint</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">--- 修改列名</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name change <span class="keyword">column</span> column_name new_column_name column_type;</span><br><span class="line"></span><br><span class="line"><span class="comment">--- 删除列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">drop</span> <span class="keyword">column</span> column_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">--- 修改表名</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name rename new_table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> [if <span class="keyword">exists</span>] table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 复制表</span></span><br><span class="line"><span class="comment">--- 复制结构</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> new_table <span class="keyword">like</span> old_table;</span><br><span class="line"></span><br><span class="line"><span class="comment">--- 复制结构和数据</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> new_table</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span><span class="operator">/</span>column_1, ..., column_n <span class="keyword">from</span> old_table [<span class="keyword">where</span> <span class="keyword">condition</span>];</span><br></pre></td></tr></table></figure>
+<h2 id="TCL-语言"><a href="#TCL-语言" class="headerlink" title="TCL 语言"></a>TCL 语言</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><ul>
+<li>一个或一组 SQL 语句组成一个执行单元，这个执行单元要么全部执行，要么全部不执行。</li>
+<li>事务的特性（ACID）<ul>
+<li>原子性（Atomicity）：一个事务不可再分割，要么都执行要么都不执行</li>
+<li>一致性（Consistency）：一个事务执行会使数据从一个一致状态切换到另外一个一致状态</li>
+<li>隔离性（Isolation）：一个事务的执行不受其他事务的干扰，主要针对并发场景</li>
+<li>持久性（Durability）：一个事务一旦提交，则会永久的改变数据库的数据</li>
+</ul>
+</li>
+</ul>
+<p>事务演示：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> autocommit <span class="operator">=</span> <span class="number">0</span>; <span class="comment">-- 关闭自动提交</span></span><br><span class="line"><span class="keyword">start</span> transaction; <span class="comment">-- 当自动提交关闭时，可省略该语句</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 事务语句 1</span></span><br><span class="line"><span class="keyword">savepoint</span> a; <span class="comment">-- 回滚点</span></span><br><span class="line"><span class="comment">-- 事务语句 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 提交或者回滚</span></span><br><span class="line"><span class="keyword">commit</span><span class="operator">/</span><span class="keyword">rollback</span><span class="operator">/</span><span class="keyword">rollback</span> <span class="keyword">to</span> a;</span><br></pre></td></tr></table></figure>
+<h3 id="并发事务"><a href="#并发事务" class="headerlink" title="并发事务"></a>并发事务</h3><ul>
+<li>当同时运行多个事务，并且这些事务访问数据库中相同的数据时，如果没有采取必要的隔离机制，就会导致各种并发问题<ul>
+<li>脏读：一个事务读取了其他事务更新但还未提交的数据，如果回滚，读取到的数据就是无效的</li>
+<li>不可重复读：一个事务多次读取同一字段，值不同</li>
+<li>幻读：一个事务读取字段后，如果其他事务插入新的记录，再次读取会新增一些记录</li>
+</ul>
+</li>
+</ul>
+<p>为了避免这些问题，数据库必须具有隔离运行并发事务的能力，避免事务之间相互影响</p>
+<ul>
+<li>隔离级别<ul>
+<li>一个事务与其他事务隔离的程度称为隔离级别，不同隔离级别对应不同的干扰程度，隔离级别越高，数据一致性就越好，但并发性越弱</li>
+<li>MySQL 支持四种隔离级别，默认为可重复读</li>
+<li><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th align="center">脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>读未提交（Read uncommitted）</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+<tr>
+<td>读已提交（read committed）</td>
+<td align="center">✓</td>
+<td align="center">×</td>
+<td align="center">×</td>
+</tr>
+<tr>
+<td>可重复读（Repeatable read）</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">×</td>
+</tr>
+<tr>
+<td>串行化（Serializable）</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DDL-%E8%AF%AD%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">DDL 语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%9E%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">数值型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">字符型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%9E%8B"><span class="toc-number">1.1.3.</span> <span class="toc-text">日期型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%93%E7%9B%B8%E5%85%B3"><span class="toc-number">1.2.</span> <span class="toc-text">库相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%9B%B8%E5%85%B3"><span class="toc-number">1.3.</span> <span class="toc-text">表相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TCL-%E8%AF%AD%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">TCL 语言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">并发事务</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&text=MySQL 学习笔记-03"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&is_video=false&description=MySQL 学习笔记-03"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 学习笔记-03&body=Check out this article: https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&title=MySQL 学习笔记-03"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&name=MySQL 学习笔记-03&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lykr.github.io/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/&t=MySQL 学习笔记-03"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2021
+    Lykr
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

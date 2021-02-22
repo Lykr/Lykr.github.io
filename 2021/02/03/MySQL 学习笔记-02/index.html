@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="模糊查询123select column_1, ..., column_nfrom table_namewhere column_x 接模糊查询语句（like, between and, in, is）  like：配合通配符使用 通配符：% 匹配任意多个字符，_ 匹配一个字符 当需要查询通配符字符时，需要使用 \ 进行转义   between A and B：在 A 和 B 之间，等价于 &amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 学习笔记-02">
+<meta property="og:url" content="https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/index.html">
+<meta property="og:site_name" content="Lykr">
+<meta property="og:description" content="模糊查询123select column_1, ..., column_nfrom table_namewhere column_x 接模糊查询语句（like, between and, in, is）  like：配合通配符使用 通配符：% 匹配任意多个字符，_ 匹配一个字符 当需要查询通配符字符时，需要使用 \ 进行转义   between A and B：在 A 和 B 之间，等价于 &amp;gt">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-06T08:33:12.795Z">
+<meta property="article:author" content="Lykr">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+        
+      
+    
+    <!-- title -->
+    <title>MySQL 学习笔记-02</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2021/02/04/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2021/02/02/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&text=MySQL 学习笔记-02"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&is_video=false&description=MySQL 学习笔记-02"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 学习笔记-02&body=Check out this article: https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&name=MySQL 学习笔记-02&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&t=MySQL 学习笔记-02"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">模糊查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">排序查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1-%E5%88%86%E7%BB%84-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">统计&#x2F;分组&#x2F;聚合函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.</span> <span class="toc-text">分组查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%A1%A8-%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">多表&#x2F;连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL92-%E6%A0%87%E5%87%86"><span class="toc-number">5.1.</span> <span class="toc-text">SQL92 标准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL99-%E6%A0%87%E5%87%86"><span class="toc-number">5.2.</span> <span class="toc-text">SQL99 标准</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-number">7.</span> <span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.</span> <span class="toc-text">联合查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML-%E8%AF%AD%E8%A8%80%EF%BC%88%E5%A2%9E%E5%88%A0%E6%94%B9%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">DML 语言（增删改）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9"><span class="toc-number">2.</span> <span class="toc-text">修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">3.</span> <span class="toc-text">删除</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        MySQL 学习笔记-02
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Lykr</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-02-02T16:00:00.000Z" itemprop="datePublished">2021-02-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/MySQL/" rel="tag">MySQL</a>, <a class="tag-link-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag">学习笔记</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h3 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> column_1, ..., column_n</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">where</span> column_x 接模糊查询语句（<span class="keyword">like</span>, <span class="keyword">between</span> <span class="keyword">and</span>, <span class="keyword">in</span>, <span class="keyword">is</span>）</span><br></pre></td></tr></table></figure>
+<ol>
+<li>like：配合通配符使用<ul>
+<li>通配符：% 匹配任意多个字符，_ 匹配一个字符</li>
+<li>当需要查询通配符字符时，需要使用 \ 进行转义</li>
+</ul>
+</li>
+<li>between A and B：在 A 和 B 之间，等价于 &gt;= A and &lt;= B</li>
+<li>in (A, …, Z)：包含于 A，…，Z 中，等价于 = A or … or = Z</li>
+<li>is null：值为 null</li>
+</ol>
+<h3 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 从表中查询字段信息，并按 column_x 字段的值进行排序</span></span><br><span class="line"><span class="comment">-- asc 表示升序（默认），desc 表示降序</span></span><br><span class="line"><span class="keyword">select</span> column_1, ..., column_n <span class="keyword">from</span> table_name <span class="keyword">order</span> <span class="keyword">by</span> column_x <span class="keyword">asc</span><span class="operator">/</span><span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="统计-分组-聚合函数"><a href="#统计-分组-聚合函数" class="headerlink" title="统计/分组/聚合函数"></a>统计/分组/聚合函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 求 column 的值的和</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">sum</span>(<span class="keyword">column</span>) <span class="keyword">from</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 求 column 的值的的平均</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">avg</span>(<span class="keyword">column</span>) <span class="keyword">from</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 求 column 的值的最大值</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">max</span>(<span class="keyword">column</span>) <span class="keyword">from</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 求 column 的值的最小值</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">min</span>(<span class="keyword">column</span>) <span class="keyword">from</span> table_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 求 column 的值的非空记录数</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="keyword">column</span>) <span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 对表中满足 condition 的记录中的 column_stat 进行统计，</span></span><br><span class="line"><span class="comment">   并将结果按 column_group 进行分组，</span></span><br><span class="line"><span class="comment">   按 expression 进行筛选，</span></span><br><span class="line"><span class="comment">   最后按 column_order 进行排序，</span></span><br><span class="line"><span class="comment">   [] 内为可选语句 */</span></span><br><span class="line"><span class="keyword">select</span> 聚合函数([别名.]统计字段), ..., [别名.]查询字段, ...</span><br><span class="line"><span class="keyword">from</span> 表名 [别名], ...</span><br><span class="line">[<span class="keyword">where</span> 条件语句]</span><br><span class="line">[<span class="keyword">group</span> <span class="keyword">by</span> 分组字段]</span><br><span class="line">[<span class="keyword">having</span> 条件语句]</span><br><span class="line">[<span class="keyword">order</span> <span class="keyword">by</span> 排序字段 [排序方式]];</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：当 MySQL 的 sql_mode 为 only_full_group_by 时，所有 select 后出现且未使用聚合函数的字段需要使用 group by 作为分组的字段。</p>
+<h3 id="多表-连接查询"><a href="#多表-连接查询" class="headerlink" title="多表/连接查询"></a>多表/连接查询</h3><ul>
+<li>SQL92 和 SQL99 标准<ul>
+<li>SQL92 标准：书写简单，易读性不好，仅支持内连接</li>
+<li>SQL99 标准：支持内、外、交叉连接，易读性好，书写麻烦</li>
+</ul>
+</li>
+</ul>
+<h4 id="SQL92-标准"><a href="#SQL92-标准" class="headerlink" title="SQL92 标准"></a>SQL92 标准</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> [别名_1.]查询字段, ..., [别名_n.]查询字段</span><br><span class="line"><span class="keyword">from</span> 表名_1 [别名_1], ..., 表名_n [别名_n]</span><br><span class="line">[<span class="keyword">where</span> 连接条件 [其他逻辑]]</span><br><span class="line">[<span class="keyword">group</span> <span class="keyword">by</span> 分组字段]</span><br><span class="line">[<span class="keyword">having</span> 条件语句]</span><br><span class="line">[<span class="keyword">order</span> <span class="keyword">by</span> 排序字段 [排序方式]];</span><br></pre></td></tr></table></figure>
+<h4 id="SQL99-标准"><a href="#SQL99-标准" class="headerlink" title="SQL99 标准"></a>SQL99 标准</h4><ul>
+<li>内连接、外连接和交叉连接<ul>
+<li>内连接（<code>join</code>）：指连接结果仅包含符合连接条件的行<ul>
+<li><code>join</code> 等价于 <code>inner join</code></li>
+<li>执行顺序：对所有表进行 <code>where</code> 筛选，将结果集按升序排序，在对结果集无影响的情况下，优先选择结果集最小的表作为驱动表</li>
+</ul>
+</li>
+<li>外连接（<code>left/right join</code>）：连接结果包含主表的所有行，以及满足连接条件的附表的行，不满足条件的附表区域用 null 填充<ul>
+<li><code>left join</code> 和 <code>right join</code> 分别等价于 <code>left outer join</code> 和 <code>right outer join</code></li>
+<li><code>left join</code> 左侧为主表，<code>right join</code> 右侧为主表，主表</li>
+<li>执行顺序：nest loop join 机制，对外层结果集和内层结果集，先筛选再连接</li>
+</ul>
+</li>
+<li>交叉连接（不带 <code>on</code> 或 <code>cross join</code>）：返回两个表的“笛卡尔积”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> [别名_1.]查询字段, ..., [别名_n.]查询字段</span><br><span class="line"><span class="keyword">from</span> 表名_1 [别名_1]</span><br><span class="line">[<span class="keyword">left</span><span class="operator">/</span><span class="keyword">right</span>] <span class="keyword">join</span> 表名_2 [别名_2] <span class="keyword">on</span> 条件语句</span><br><span class="line">...</span><br><span class="line">[[<span class="keyword">left</span><span class="operator">/</span><span class="keyword">right</span>] <span class="keyword">join</span> 表名_n [别名_n] <span class="keyword">on</span> 条件语句]</span><br><span class="line">[<span class="keyword">where</span> 连接条件 [其他逻辑]]</span><br><span class="line">[<span class="keyword">group</span> <span class="keyword">by</span> 分组字段]</span><br><span class="line">[<span class="keyword">having</span> 条件语句]</span><br><span class="line">[<span class="keyword">order</span> <span class="keyword">by</span> 排序字段 [排序方式]];</span><br></pre></td></tr></table></figure>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>将查询结果（标量、表）当做查询参数，嵌套查询。</p>
+<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- offset 起始索引（从零开始），size 显示条目数</span></span><br><span class="line"><span class="comment">-- 常用公式 offset = (page - 1) * size，page 属于正整数</span></span><br><span class="line"><span class="keyword">select</span> ... <span class="keyword">from</span> ...</span><br><span class="line">[limit param_offset, param_size];</span><br></pre></td></tr></table></figure>
+<h3 id="联合查询"><a href="#联合查询" class="headerlink" title="联合查询"></a>联合查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- union 默认去重，加 all 不去重</span></span><br><span class="line"><span class="keyword">select</span> ... <span class="keyword">from</span> ...</span><br><span class="line"><span class="keyword">union</span> [<span class="keyword">all</span>]</span><br><span class="line"><span class="keyword">select</span> ... <span class="keyword">from</span> ...</span><br><span class="line">[<span class="keyword">union</span> [<span class="keyword">all</span>]</span><br><span class="line">...]</span><br></pre></td></tr></table></figure>
+<h2 id="DML-语言（增删改）"><a href="#DML-语言（增删改）" class="headerlink" title="DML 语言（增删改）"></a>DML 语言（增删改）</h2><h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 方式一，支持插入子查询结果</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table_name(column_1, ..., column_n)</span><br><span class="line"><span class="keyword">values</span>(value_1_1, ..., value_1_n)[,</span><br><span class="line">...</span><br><span class="line">(value_m_1, ..., value_m_n)];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 方式二，不支持插入子查询结果</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table_name <span class="keyword">set</span> column_1 <span class="operator">=</span> value_1, ..., column_n <span class="operator">=</span> value_n;</span><br></pre></td></tr></table></figure>
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 单表修改</span></span><br><span class="line"><span class="keyword">update</span> table_name <span class="keyword">set</span> column_1 <span class="operator">=</span> value_1, ..., column_n <span class="operator">=</span> value_n</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">condition</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 多表连接修改</span></span><br><span class="line"><span class="comment">--- SQL92</span></span><br><span class="line"><span class="keyword">update</span> table_1 t1, ..., table_n tn</span><br><span class="line"><span class="keyword">set</span> t1.column_x <span class="operator">=</span> value_x, ..., tn.column_y <span class="operator">=</span> value_y</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">condition</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--- SQL99</span></span><br><span class="line"><span class="keyword">update</span> table_1 t1</span><br><span class="line">...</span><br><span class="line">[<span class="keyword">left</span><span class="operator">/</span><span class="keyword">right</span>] <span class="keyword">join</span> table_n tn <span class="keyword">on</span> <span class="keyword">condition</span></span><br><span class="line"><span class="keyword">set</span> t1.column_x <span class="operator">=</span> value_x, ..., tn.column_y <span class="operator">=</span> value_y</span><br><span class="line">[<span class="keyword">where</span> <span class="keyword">condition</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 单表删除</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> table_name <span class="keyword">where</span> <span class="keyword">condition</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 多表删除，tx 为要删除记录的表</span></span><br><span class="line"><span class="keyword">delete</span> tx</span><br><span class="line"><span class="keyword">from</span> table_1 t1</span><br><span class="line">...</span><br><span class="line">[<span class="keyword">left</span><span class="operator">/</span><span class="keyword">right</span>] <span class="keyword">join</span> table_n tn <span class="keyword">on</span> <span class="keyword">condition</span></span><br><span class="line">[<span class="keyword">where</span> <span class="keyword">condition</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 清空表中所有记录</span></span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> table_name;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>delete</code> 和 <code>truncate</code> 的区别：<ol>
+<li><code>delete</code> 可以加条件语句，<code>truncate</code> 不能</li>
+<li><code>delete</code> 有返回值，<code>truncate</code> 没有</li>
+<li><code>delete</code> 能作用于表、视图，<code>truncate</code> 只能作用于表</li>
+<li><code>delete</code> 不会充值自增列，<code>truncate</code> 会（重置为从 1 开始）</li>
+<li><code>delete</code> 可以回滚，<code>truncate</code> 不行</li>
+</ol>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">模糊查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.</span> <span class="toc-text">排序查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1-%E5%88%86%E7%BB%84-%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">统计&#x2F;分组&#x2F;聚合函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="toc-number">4.</span> <span class="toc-text">分组查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%A1%A8-%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">多表&#x2F;连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL92-%E6%A0%87%E5%87%86"><span class="toc-number">5.1.</span> <span class="toc-text">SQL92 标准</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL99-%E6%A0%87%E5%87%86"><span class="toc-number">5.2.</span> <span class="toc-text">SQL99 标准</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-number">7.</span> <span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="toc-number">8.</span> <span class="toc-text">联合查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DML-%E8%AF%AD%E8%A8%80%EF%BC%88%E5%A2%9E%E5%88%A0%E6%94%B9%EF%BC%89"><span class="toc-number"></span> <span class="toc-text">DML 语言（增删改）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9"><span class="toc-number">2.</span> <span class="toc-text">修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">3.</span> <span class="toc-text">删除</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&text=MySQL 学习笔记-02"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&is_video=false&description=MySQL 学习笔记-02"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySQL 学习笔记-02&body=Check out this article: https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&title=MySQL 学习笔记-02"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&name=MySQL 学习笔记-02&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://lykr.github.io/2021/02/03/MySQL%20%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/&t=MySQL 学习笔记-02"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2021
+    Lykr
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
